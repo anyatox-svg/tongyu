@@ -1,0 +1,522 @@
+:root {
+    --sakura-pink: #ffd1dc;
+    --sakura-dark-pink: #ff9eb5;
+    --clow-gold: #d4af37;
+    --clow-light-gold: #fdf5e6;
+    --bg-white: #fffdfef0;
+}
+
+body, html {
+    margin: 0;
+    padding: 0;
+    width: 100%;
+    height: 100%;
+    font-family: 'Noto Serif SC', serif;
+    overflow-x: hidden;
+    /* 关键修改：把原本的背景色改为透明，让底层的背景图和樱花透出来 */
+    background-color: transparent; 
+}
+
+/* 顺便找到 .parallax-wrapper，把粉色底色加给它作为保底 */
+.parallax-wrapper {
+    position: fixed;
+    top: -5%; left: -5%;
+    width: 110%; height: 110%;
+    z-index: -2;
+    overflow: hidden;
+    background-color: var(--sakura-pink); /* 粉色底色移到这里 */
+}
+
+/* --- 魔法阵加载动画 --- */
+#loader {
+    position: fixed;
+    top: 0; left: 0; width: 100%; height: 100%;
+    background-color: var(--bg-white);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 9999;
+    transition: opacity 0.8s ease-out;
+}
+
+.magic-circle-loader {
+    width: 150px; height: 150px;
+    border: 4px dashed var(--clow-gold);
+    border-radius: 50%;
+    box-shadow: 0 0 20px var(--sakura-dark-pink), inset 0 0 20px var(--clow-gold);
+    animation: spin 3s linear infinite;
+    position: relative;
+}
+.magic-circle-loader::before {
+    content: '✡';
+    position: absolute;
+    top: 50%; left: 50%;
+    transform: translate(-50%, -50%);
+    font-size: 80px;
+    color: var(--sakura-dark-pink);
+}
+
+@keyframes spin { 100% { transform: rotate(360deg); } }
+
+/* --- 视差与 Live2D 呼吸图层 --- */
+.parallax-wrapper {
+    position: fixed;
+    top: -5%; left: -5%;
+    width: 110%; height: 110%;
+    z-index: -2;
+    overflow: hidden;
+}
+
+#layer-bg {
+    position: absolute;
+    width: 100%; height: 100%;
+    background-size: cover;
+    background-position: center;
+    filter: blur(8px) brightness(0.9);
+    transition: transform 0.1s ease-out;
+}
+
+#layer-fg {
+    position: absolute;
+    width: 100%; height: 100%;
+    background-size: cover;
+    background-position: center;
+    /* Live2D 呼吸动效 */
+    animation: breathe 5s ease-in-out infinite;
+    transition: transform 0.1s ease-out;
+}
+
+@keyframes breathe {
+    0%, 100% { transform: scale(1) translateY(0); }
+    50% { transform: scale(1.02) translateY(-8px); }
+}
+
+/* --- 樱花飘落特效 --- */
+#sakura-container {
+    position: fixed;
+    top: 0; left: 0; width: 100%; height: 100%;
+    pointer-events: none;
+    z-index: -1;
+}
+.petal {
+    position: absolute;
+    background-color: var(--sakura-pink);
+    border-radius: 15px 0 15px 0;
+    opacity: 0.8;
+    box-shadow: 0 0 5px rgba(255,158,181,0.5);
+    animation: fall linear infinite;
+}
+@keyframes fall {
+    to { transform: translateY(110vh) rotate(720deg); }
+}
+
+/* --- 卡牌式导航栏 --- */
+/* 修改导航栏布局为右上角固定 */
+nav {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    display: flex;
+    flex-direction: row; /* 横向排列三个卡片 */
+    gap: 15px;           /* 卡片之间的间距 */
+    z-index: 1000;       /* 确保浮在最上方 */
+}
+
+/* 确保每个卡片的样式能够自适应 */
+.clow-card-nav {
+    width: 60px;
+    height: 100px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: rgba(255, 255, 255, 0.2);
+    border: 2px solid var(--clow-gold);
+    border-radius: 10px;
+    backdrop-filter: blur(5px);
+    cursor: pointer;
+    transition: all 0.3s;
+    text-align: center;
+    color: var(--sakura-dark-pink);
+    font-family: 'Ma Shan Zheng', cursive;
+}
+
+.clow-card-nav:hover {
+    transform: scale(1.05);
+    background: rgba(255, 255, 255, 0.4);
+}
+
+.clow-card-nav {
+    width: 60px; height: 120px;
+    background-color: var(--clow-light-gold);
+    border: 2px solid var(--clow-gold);
+    border-radius: 8px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+    box-shadow: 2px 2px 8px rgba(0,0,0,0.2);
+    transition: all 0.3s ease;
+    writing-mode: vertical-rl; /* 文字竖排 */
+    text-tracking: 5px;
+}
+.clow-card-nav span {
+    font-size: 1.2rem;
+    font-weight: bold;
+    color: var(--sakura-dark-pink);
+    letter-spacing: 4px;
+}
+.clow-card-nav:hover {
+    transform: translateY(-10px);
+    box-shadow: 0 10px 15px rgba(212, 175, 55, 0.4);
+}
+
+/* --- 点击生成的动态魔法阵 --- */
+.click-magic-circle {
+    position: absolute;
+    width: 100px; height: 100px;
+    border: 3px solid var(--sakura-dark-pink);
+    border-radius: 50%;
+    transform: translate(-50%, -50%) scale(0);
+    pointer-events: none;
+    z-index: 100;
+    animation: burst 0.8s ease-out forwards;
+}
+@keyframes burst {
+    50% { transform: translate(-50%, -50%) scale(1.5) rotate(180deg); opacity: 1; }
+    100% { transform: translate(-50%, -50%) scale(2) rotate(360deg); opacity: 0; }
+}
+
+/* --- 页面主体与作品卡牌翻转 --- */
+main {
+    padding-top: 15vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    z-index: 1;
+}
+
+.magic-title {
+    font-family: 'Ma Shan Zheng', cursive;
+    font-size: 4rem;
+    color: #fff;
+    text-shadow: 0 0 10px var(--sakura-dark-pink), 0 0 20px var(--clow-gold);
+    margin-bottom: 50px;
+}
+
+.gallery {
+    display: flex;
+    gap: 40px;
+    flex-wrap: wrap;
+    justify-content: center;
+}
+
+.flip-card {
+    background-color: transparent;
+    width: 300px; height: 450px;
+    perspective: 1000px;
+}
+
+.flip-card-inner {
+    position: relative;
+    width: 100%; height: 100%;
+    text-align: center;
+    transition: transform 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    transform-style: preserve-3d;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+    border-radius: 12px;
+}
+
+.flip-card:hover .flip-card-inner {
+    transform: rotateY(180deg);
+}
+
+.flip-card-front, .flip-card-back {
+    position: absolute;
+    width: 100%; height: 100%;
+    -webkit-backface-visibility: hidden;
+    backface-visibility: hidden;
+    border-radius: 12px;
+    border: 4px solid var(--clow-gold);
+    box-sizing: border-box;
+}
+
+.flip-card-front {
+    background-size: cover;
+    background-position: center;
+}
+
+.flip-card-back {
+    background-color: var(--clow-light-gold);
+    color: var(--sakura-dark-pink);
+    transform: rotateY(180deg);
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    background-image: repeating-linear-gradient(45deg, transparent, transparent 10px, rgba(255, 209, 220, 0.2) 10px, rgba(255, 209, 220, 0.2) 20px);
+}
+
+.flip-card-back {
+    background-color: var(--clow-light-gold);
+    color: var(--sakura-dark-pink);
+    /* 关键修复：确保背面初始状态就是翻转180度的，这样卡牌翻过来时文字才是正的 */
+    -webkit-transform: rotateY(180deg);
+    transform: rotateY(180deg); 
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    background-image: repeating-linear-gradient(45deg, transparent, transparent 10px, rgba(255, 209, 220, 0.2) 10px, rgba(255, 209, 220, 0.2) 20px);
+}
+}
+
+.card-info {
+    text-align: left;
+    font-size: 0.95rem;
+    line-height: 1.6;
+}
+/* =========================================
+   详情页 (detail.html) 专属样式
+========================================= */
+
+.detail-main {
+    padding-top: 10vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    z-index: 1;
+    gap: 40px; /* 元素之间的间距 */
+}
+
+/* 图四的展示框 */
+.detail-image-box {
+    width: 80%;
+    max-width: 600px;
+    height: 450px;
+    background-size: cover;
+    background-position: center;
+    border: 4px solid var(--clow-gold); /* 小樱牌金边 */
+    border-radius: 16px;
+    box-shadow: 0 10px 30px rgba(212, 175, 55, 0.5), 0 0 20px var(--sakura-dark-pink);
+}
+
+/* 下方的预留黑框 */
+.detail-placeholder {
+    width: 80%;
+    max-width: 600px;
+    height: 300px;
+    background-color: rgba(17, 17, 17, 0.85); /* 半透明高级黑 */
+    border: 2px dashed var(--sakura-pink);
+    border-radius: 16px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: var(--sakura-pink);
+    font-size: 1.2rem;
+    letter-spacing: 3px;
+    margin-bottom: 80px;
+}
+
+/* 长文案魔法字体 */
+.magic-text-long {
+    font-family: 'Ma Shan Zheng', cursive;
+    font-size: 2.8rem;
+    color: #ffffff;
+    text-align: center;
+    line-height: 1.6;
+    margin: 10px 20px;
+    /* 文字呼吸发光动画 */
+    animation: textGlow 4s ease-in-out infinite;
+}
+
+@keyframes textGlow {
+    0%, 100% { text-shadow: 0 0 10px var(--sakura-dark-pink), 0 0 20px var(--clow-gold); }
+    50% { text-shadow: 0 0 20px var(--sakura-dark-pink), 0 0 40px var(--clow-gold), 0 0 60px #fff; }
+}
+
+/* 赋予元素的 Live2D 上下悬浮呼吸感 */
+.live2d-breathe {
+    animation: breatheElement 5s ease-in-out infinite;
+}
+
+/* 让下面那个框的呼吸节奏和上面错开，显得更生动自然 */
+.live2d-breathe-delay {
+    animation: breatheElement 5s ease-in-out infinite 2.5s; 
+}
+
+@keyframes breatheElement {
+    0%, 100% { transform: translateY(0) scale(1); }
+    50% { transform: translateY(-15px) scale(1.02); }
+}
+/* =========================================
+   作品集 (works.html) 样式
+========================================= */
+.works-main {
+    padding-top: 100px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.works-title {
+    font-family: 'Ma Shan Zheng', cursive;
+    color: #fff;
+    font-size: 3rem;
+    margin-bottom: 50px;
+    text-shadow: 0 0 20px var(--sakura-dark-pink);
+}
+
+.works-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 30px;
+    width: 80%;
+    max-width: 1000px;
+}
+
+.work-item {
+    background: rgba(255, 255, 255, 0.1);
+    padding: 15px;
+    border-radius: 15px;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    transition: transform 0.3s;
+    text-align: center;
+}
+
+.work-item:hover {
+    transform: translateY(-10px);
+    border-color: var(--clow-gold);
+}
+
+.work-image {
+    width: 100%;
+    height: 400px;
+    background-size: cover;
+    background-position: center;
+    border-radius: 10px;
+    margin-bottom: 15px;
+}
+
+.work-item p {
+    color: #fff;
+    font-size: 1.2rem;
+}
+/* 横向滚动容器样式 */
+.works-horizontal-main {
+    padding-top: 20vh;
+    width: 100%;
+}
+
+.horizontal-scroll-container {
+    display: flex;
+    overflow-x: auto;
+    padding: 50px;
+    gap: 40px;
+    scrollbar-width: thin; /* Firefox */
+}
+
+/* =========================================
+   作品集网格布局 (每行3个)
+========================================= */
+.works-grid-container {
+    display: grid;
+    /* 核心代码：定义三列，每列占据等分宽度 */
+    grid-template-columns: repeat(3, 1fr); 
+    gap: 30px;
+    padding: 50px;
+    width: 85%;
+    max-width: 1200px;
+    margin: 0 auto; /* 居中 */
+}
+
+.work-item {
+    /* 取消之前的 flex 设置 */
+    width: 100%;
+    background: rgba(255, 255, 255, 0.1);
+    padding: 15px;
+    border-radius: 15px;
+    border: 1px solid var(--clow-gold);
+    color: white;
+    text-align: center;
+    transition: transform 0.3s;
+}
+
+.work-item:hover {
+    transform: translateY(-10px);
+    border-color: var(--sakura-dark-pink);
+}
+
+/* 适配手机端（如果屏幕变窄，自动变为1列） */
+@media (max-width: 768px) {
+    .works-grid-container {
+        grid-template-columns: 1fr;
+    }
+}
+/* 隐藏视频容器 */
+#video-overlay {
+    position: fixed;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
+    background: rgba(0, 0, 0, 0.85);
+    display: none; /* 默认隐藏 */
+    justify-content: center;
+    align-items: center;
+    z-index: 9999;
+    backdrop-filter: blur(10px);
+}
+
+.video-content {
+    width: 80%;
+    max-width: 800px;
+    text-align: center;
+}
+
+video {
+    width: 100%;
+    border: 4px solid var(--clow-gold);
+    border-radius: 15px;
+}
+
+.close-hint {
+    color: #fff;
+    margin-top: 20px;
+    font-family: 'Ma Shan Zheng';
+    opacity: 0.6;
+}
+/* --- BGM 音乐播放控制 --- */
+.bgm-control {
+    position: fixed;
+    top: 20px;
+    left: 20px;
+    z-index: 9999;
+    width: 50px;
+    height: 50px;
+    background: rgba(255, 255, 255, 0.2);
+    border: 2px solid var(--clow-gold);
+    border-radius: 50%;
+    backdrop-filter: blur(5px);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+    transition: all 0.3s;
+    animation: breatheElement 3s infinite;
+}
+
+.bgm-control:hover {
+    transform: scale(1.1) rotate(10deg);
+    background: rgba(255, 255, 255, 0.4);
+}
+
+.bgm-icon {
+    font-size: 20px;
+    color: var(--sakura-dark-pink);
+}
+
+/* 播放时的旋转动画 */
+.playing {
+    animation: spin 3s linear infinite;
+}
+@keyframes spin {
+    100% { transform: rotate(360deg); }
+}

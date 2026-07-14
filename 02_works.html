@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <title>桐羽 - 作品集</title>
+    <link rel="stylesheet" href="./css/style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Ma+Shan+Zheng&family=Noto+Serif+SC:wght@400;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div id="sakura-container"></div>
+    
+    <div class="parallax-wrapper">
+        <div id="layer-bg" style="background-image: url('./image/tongyubeijing.png'); filter: blur(8px) brightness(0.6);"></div>
+        <div id="layer-fg" style="background-image: url('./image/tongyu2_fg.png');"></div>
+    </div>
+
+    <nav>
+        <div class="clow-card-nav" onclick="window.location.href='index.html'"><span>返回主页</span></div>
+    </nav>
+
+    <main class="works-horizontal-main">
+        <h2 class="works-title">桐羽集册</h2>
+        <div class="works-grid-container">
+            <!-- ... existing items ... -->
+            <div class="work-item"><div class="work-image" style="background-image: url('./image/tongyu1.jpg');"></div><p>纯白花嫁·樱</p><p style="font-size: 0.85rem; color: #ddd; margin-top: -5px;">Coser：桐羽 | 摄影师：莉莉丝最后的轻语</p></div>
+            <div class="work-item"><div class="work-image" style="background-image: url('./image/tongyu2.jpg');"></div><p>春日物语·樱</p><p style="font-size: 0.85rem; color: #ddd; margin-top: -5px;">Coser：桐羽 | 摄影师：莉莉丝最后的轻语</p></div>
+            <div class="work-item"><div class="work-image" style="background-image: url('./image/tongyu3.jpg');"></div><p>春日物语·樱</p><p style="font-size: 0.85rem; color: #ddd; margin-top: -5px;">Coser：桐羽 | 摄影师：莉莉丝最后的轻语</p></div>
+            <div class="work-item"><div class="work-image" style="background-image: url('./image/tongyu4.jpg');"></div><p>木之本樱</p><p style="font-size: 0.85rem; color: #ddd; margin-top: -5px;">Coser：桐羽 | 摄影师：莉莉丝最后的轻语</p></div>
+            <div class="work-item"><div class="work-image" style="background-image: url('./image/tongyubeijing.png');"></div><p>木之本樱</p><p style="font-size: 0.85rem; color: #ddd; margin-top: -5px;">Coser：桐羽 | 摄影师：待定</p></div>
+            <div class="work-item"><div class="work-image" style="background-image: url('./image/tongyu6.jpg');"></div><p>木之本樱</p><p style="font-size: 0.85rem; color: #ddd; margin-top: -5px;">Coser：桐羽 | 摄影师：莉莉丝最后的轻语</p></div>
+            <div class="work-item"><div class="work-image" style="background-image: url('./image/tongyu7.jpg');"></div><p>初音未来</p><p style="font-size: 0.85rem; color: #ddd; margin-top: -5px;">Coser：桐羽 | 摄影师：豆包</p></div>
+            <div class="work-item"><div class="work-image" style="background-image: url('./image/tongyu9.jpg');"></div><p>木之本樱</p><p style="font-size: 0.85rem; color: #ddd; margin-top: -5px;">Coser：桐羽 | 摄影师：待定</p></div>
+            <div class="work-item"><div class="work-image" style="background-image: url('./image/tongyu8.jpg');"></div><p>初音未来</p><p style="font-size: 0.85rem; color: #ddd; margin-top: -5px;">Coser：桐羽 | 摄影师：豆包</p></div>
+        </div>
+    </main>
+
+    <script src="./js/script.js"></script>
+    <script>
+        document.addEventListener('click', function(e) {
+            // 只要点击的不是作品卡片且不是导航栏，就视为背景空白
+            const isClickingCard = e.target.closest('.work-item');
+            const isClickingNav = e.target.closest('nav');
+            
+            if (!isClickingCard && !isClickingNav) {
+                // 跳转到隐藏的专属页面
+                window.location.href = 'hidden_gallery.html';
+            }
+        });
+    </script>
+    <!-- 统一的 BGM 播放器，放置在所有页面的底部 -->
+<div class="bgm-control" id="bgm-toggle">
+    <div class="bgm-icon">♪</div>
+</div>
+<audio id="bgm-audio" loop>
+    <source src="./mp3/music.mp3.mpeg" type="audio/mpeg">
+</audio>
+</body>
+</html>

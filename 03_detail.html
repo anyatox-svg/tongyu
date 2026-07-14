@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>桐羽 - 另一个世界的你</title>
+    <!-- 连接到你的 CSS -->
+    <link rel="stylesheet" href="./css/style.css">
+    <!-- 引入艺术字体 -->
+    <link href="https://fonts.googleapis.com/css2?family=Ma+Shan+Zheng&family=Noto+Serif+SC:wght@400;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <!-- 樱花飘落容器 -->
+    <div id="sakura-container"></div>
+
+    <!-- 视差背景层 -->
+    <div class="parallax-wrapper">
+        <!-- 背景使用图三，虚化处理以突出主体 -->
+        <div id="layer-bg" style="background-image: url('./image/tongyubeijing.png'); filter: blur(10px) brightness(0.6);"></div>
+    </div>
+
+    <!-- 导航栏 -->
+    <nav>
+        <div class="clow-card-nav" onclick="window.location.href='index.html'"><span>返回主页</span></div>
+    </nav>
+
+    <!-- 详情页主体内容 -->
+    <main class="detail-main">
+        <!-- 上层图：图四 (tongyu1.jpg) -->
+        <div class="detail-image-box live2d-breathe" style="background-image: url('./image/tongyu1.jpg');"></div>
+
+        <!-- 专属祝福语 -->
+        <h2 class="magic-text-long">祝另一个世界的你，<br>愿岁岁无忧，永远被温柔与樱花簇拥🌸</h2>
+
+        <!-- 下层图：图二 (tongyu2.jpg) -->
+        <div class="detail-image-box live2d-breathe-delay" style="background-image: url('./image/tongyubeijing.png'); margin-bottom: 100px;"></div>
+    </main>
+
+    <!-- 引入 JS -->
+    <script src="./js/script.js"></script>
+    <!-- 统一的 BGM 播放器，放置在所有页面的底部 -->
+<div class="bgm-control" id="bgm-toggle">
+    <div class="bgm-icon">♪</div>
+</div>
+<audio id="bgm-audio" loop>
+    <source src="./mp3/music.mp3.mpeg" type="audio/mpeg">
+</audio>
+</body>
+</html>

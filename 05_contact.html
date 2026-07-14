@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>桐羽 - 联系方式</title>
+    <link rel="stylesheet" href="./css/style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Ma+Shan+Zheng&family=Noto+Serif+SC:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --sakura-pink: #ffd1dc;
+            --sakura-dark-pink: #ff9eb5;
+            --clow-gold: #d4af37;
+            --clow-light-gold: #fdf5e6;
+        }
+        .contact-main {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+        .contact-card {
+            background: rgba(255, 255, 255, 0.15);
+            border: 2px solid var(--clow-gold);
+            border-radius: 20px;
+            padding: 40px 60px;
+            backdrop-filter: blur(10px);
+            text-align: center;
+            box-shadow: 0 0 20px rgba(212, 175, 55, 0.3);
+            animation: breatheElement 5s ease-in-out infinite;
+        }
+        .ig-handle {
+            font-family: 'Ma Shan Zheng', cursive;
+            font-size: 2.8rem; /* 与祝福语完全一致的大字号 */
+            color: #fff;
+            margin: 20px 0;
+            text-transform: uppercase; /* 确保英文部分大写 */
+            text-shadow: 0 0 10px var(--sakura-dark-pink), 0 0 20px var(--clow-gold);
+            animation: textGlow 4s ease-in-out infinite; /* 引入魔法发光呼吸动效 */
+        }
+        @keyframes textGlow {
+            0%, 100% { text-shadow: 0 0 10px var(--sakura-dark-pink), 0 0 20px var(--clow-gold); }
+            50% { text-shadow: 0 0 20px var(--sakura-dark-pink), 0 0 40px var(--clow-gold), 0 0 60px #fff; }
+        }
+        .btn-follow {
+            background: var(--clow-light-gold);
+            color: var(--sakura-dark-pink);
+            border: 1px solid var(--clow-gold);
+            padding: 10px 30px;
+            border-radius: 30px;
+            font-size: 1.2rem;
+            cursor: pointer;
+            transition: all 0.3s;
+            margin-top: 20px;
+        }
+        .btn-follow:hover {
+            transform: scale(1.05);
+            background: var(--sakura-pink);
+            color: white;
+        }
+    </style>
+</head>
+<body>
+    <div id="sakura-container"></div>
+
+    <div class="parallax-wrapper">
+        <div id="layer-bg" style="background-image: url('./image/tongyubeijing.png'); filter: blur(8px) brightness(0.6);"></div>
+        <div id="layer-fg" style="background-image: url('./image/tongyu2_fg.png');"></div>
+    </div>
+
+    <nav>
+        <div class="clow-card-nav" onclick="window.location.href='index.html'"><span>主页</span></div>
+        <div class="clow-card-nav" onclick="window.location.href='works.html'"><span>作品</span></div>
+    </nav>
+
+    <main class="contact-main">
+        <div class="contact-card">
+            <h2 class="magic-title" style="margin-bottom: 20px; font-size: 2.5rem;">联系方式</h2>
+            <p style="color: white; opacity: 0.8;">期待与你在另一个世界相遇</p>
+            <div class="ig-handle">IG: TUNGYU_COS</div>
+            <button class="btn-follow" onclick="window.open('https://www.instagram.com/tungyu_cos/')">前往关注</button>
+        </div>
+    </main>
+
+    <script src="./js/script.js"></script>
+    <!-- 统一的 BGM 播放器，放置在所有页面的底部 -->
+<div class="bgm-control" id="bgm-toggle">
+    <div class="bgm-icon">♪</div>
+</div>
+<audio id="bgm-audio" loop>
+    <source src="./mp3/music.mp3.mpeg" type="audio/mpeg">
+</audio>
+</body>
+</html>
